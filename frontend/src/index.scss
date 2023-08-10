@@ -1,0 +1,14 @@
+@import './styles/reset';
+@import './styles/fonts';
+@import './styles/constants';
+@import "./styles/mixins";
+
+body {
+  font-family: $font-family-main;
+  background-color: $bg-color-body;
+  font-weight: 400;
+}
+
+*{
+  box-sizing: border-box;
+}

@@ -1,0 +1,16 @@
+@import "../../../styles/constants";
+@import "../../../styles/mixins";
+
+.input{
+  background-color: $bg-color-white;
+  border-radius: $border-radius;
+  border: 1px solid $border-color-primary;
+  padding: 10px;
+  font-size: 14px;
+  width: 100%;
+  color: $font-color-medium-grey;
+
+  &:focus {
+    border-color: $border-color-active;
+  }
+}

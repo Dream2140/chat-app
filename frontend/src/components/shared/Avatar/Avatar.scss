@@ -1,0 +1,16 @@
+@import "../../../styles/mixins";
+@import "../../../styles/constants";
+
+.avatar{
+  width: 100%;
+  height: auto;
+  background-color: $bg-color-white;
+  .avatar__wrapper{
+    @include centerElement();
+
+    height: 100%;
+  }
+  &__letter{
+
+  }
+}

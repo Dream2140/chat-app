@@ -1,0 +1,27 @@
+@import "../../../styles/constants";
+@import "../../../styles/mixins";
+
+.tabs {
+  &__content{
+    padding: 15px;
+  }
+  &__header{
+    font-size: 14px;
+    font-weight: 400;
+    color: $font-color-tab-title;
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    height: 40px;
+  }
+  &__title{
+    flex: 1;
+    @include centerElement();
+    cursor: pointer;
+
+    &:hover{
+      background-color: $bg-color-color-tab;
+    }
+  }
+
+}

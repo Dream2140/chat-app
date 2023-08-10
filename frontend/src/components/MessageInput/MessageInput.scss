@@ -1,0 +1,9 @@
+@import "../../styles/constants";
+@import "../../styles/mixins";
+
+.message-input{
+  padding: 0 30px 20px 30px;
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}

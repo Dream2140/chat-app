@@ -1,0 +1,10 @@
+@import "../../../styles/constants";
+@import "../../../styles/mixins";
+
+.button{
+  background-color: $bg-color-button;
+  border: 1px solid $border-color-btn;
+  border-radius: $border-radius;
+  padding: 10px 50px;
+  color: #ffffff;
+}

@@ -1,0 +1,21 @@
+@import "../../styles/constants";
+@import "../../styles/mixins";
+
+.header{
+  background-color: $bg-color-white;
+  height: 80px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-start;
+
+  &__wrapper{
+    @include container();
+
+  }
+
+  &__title{
+    color: $font-color-black;
+    font-size: 32px;
+    line-height: 67px;
+  }
+}

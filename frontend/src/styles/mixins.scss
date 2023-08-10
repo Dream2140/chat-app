@@ -1,0 +1,14 @@
+@import "./constants";
+
+@mixin container(){
+  max-width: $max-width;
+  width: 100%;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+@mixin centerElement(){
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

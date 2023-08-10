@@ -1,0 +1,25 @@
+@import "../../styles/constants";
+@import "../../styles/mixins";
+
+.chat {
+  margin-top: 20px;
+  min-height: 650px;
+
+  &__wrapper {
+    @include container();
+    border-radius: $border-radius;
+    overflow: hidden;
+    border: 1px solid $border-color-primary;
+    display: flex;
+  }
+  &__content{
+
+    background-color: $bg-color-color-message-list;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  &__aside{
+    background-color: $bg-color-white;
+  }
+}

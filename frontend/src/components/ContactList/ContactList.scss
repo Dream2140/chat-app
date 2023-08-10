@@ -1,0 +1,14 @@
+@import "../../styles/constants";
+@import "../../styles/mixins";
+
+.contact-list{
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  justify-content: space-between;
+  min-width: 260px;
+
+  &__bottom{
+    padding: 15px;
+  }
+}

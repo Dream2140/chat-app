@@ -1,0 +1,56 @@
+@import "../../styles/constants";
+@import "../../styles/mixins";
+
+.message {
+  background-color: $bg-color-color-message;
+  border-radius: $border-radius;
+  overflow: hidden;
+  max-width: 635px;
+  width: 100%;
+  &:not(:last-child) {
+    margin-bottom: 20px;
+  }
+
+  &__header {
+    padding: 15px;
+    background-color: $bg-color-color-user-card;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  &__body {
+    padding: 15px;
+  }
+
+  &__username {
+    font-size: 14px;
+    color: $font-color-black;
+  }
+
+  &__text {
+    font-size: 14px;
+    color: $font-color-dark-grey;
+    line-height: 20px;
+  }
+
+  &__time{
+    font-size: 14px;
+    color: $font-color-light-grey;
+  }
+
+  &--sender {
+    margin-left: auto;
+    .message__header {
+      background-color: $output-message-color;
+    }
+    .message__username{
+      color: $font-color-recipient-message;
+    }
+  }
+
+  &--recipient {
+    &__username {
+      color: $font-color-black;
+    }
+  }
+}
