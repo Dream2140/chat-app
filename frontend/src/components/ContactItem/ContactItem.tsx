@@ -24,7 +24,6 @@ export const ContactItem = ({contactData, onClick}: ContactItemProps) => {
                 <Avatar avatarLetter={contactData.avatar} userName={contactData.nickname}/>
             </div>
             <div className="contact-item__message">
-                {contactData._id}
                 <h6 className="contact-item__username">{contactData.nickname}</h6>
                 <p className="contact-item__message">
                     {truncateString(MOCK_USER_DESCRIPTION, DESCRIPTION_LENGTH)}

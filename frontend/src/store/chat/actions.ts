@@ -24,10 +24,16 @@ export const setCurrentUser = (
 ): ActionWithPayloadHelper<ChatActionTypes.SET_ACTIVE_USER, UserDto> =>
     createAction(ChatActionTypes.SET_ACTIVE_USER, payload);
 
+export const setSearchQuery = (
+    payload: string,
+): ActionWithPayloadHelper<ChatActionTypes.SET_SEARCH_QUERY, string> =>
+    createAction(ChatActionTypes.SET_SEARCH_QUERY, payload);
+
 const chatActions = {
     changeChatInputValue,
     changeCurrentChat,
-    setCurrentUser
+    setCurrentUser,
+    setSearchQuery
 };
 
 export type ChatActionType = ActionsUnion<typeof chatActions>;

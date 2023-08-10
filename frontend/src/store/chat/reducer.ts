@@ -34,6 +34,12 @@ export const chatReducer = (state: ChatState = INITIAL_STATE, action: ChatAction
                 ...state,
                 userData: action.payload,
             };
+
+        case ChatActionTypes.SET_SEARCH_QUERY:
+            return {
+                ...state,
+                searchQuery: action.payload,
+            };
         default:
             return state;
     }

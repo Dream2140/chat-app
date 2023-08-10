@@ -1,4 +1,4 @@
-import React, {ChangeEvent, useCallback, useEffect, useMemo, useState} from 'react';
+import React, {ChangeEvent, useCallback, useEffect, useMemo, useRef, useState} from 'react';
 import {Button} from "../shared/Button";
 import {BUTTON_TYPE} from "../shared/Button/Button";
 import {Input} from "../shared/Input";
@@ -19,11 +19,22 @@ export const MessageInput = () => {
     const dispatch = useDispatch();
 
     const messageValue = useSelector(selectChatInputValue);
-
     const currentChat = useSelector(selectActiveChat);
     const currentUser = useSelector(selectActiveUser);
 
+    const typingTimeoutRef = useRef<number | null>(null);
+
     const handleMessageInput = useCallback((event: ChangeEvent<HTMLInputElement>) => {
+
+        if (typingTimeoutRef.current) {
+            clearTimeout(typingTimeoutRef.current);
+        }
+
+        typingTimeoutRef.current = window.setTimeout(() => {
+            socketService.emmitUserStopTyping();
+        }, 5000);
+
+        socketService.emmitUserIsTyping(currentUser?._id || '')
         dispatch(changeChatInputValue(event.target.value));
     }, []);
 
@@ -37,8 +48,6 @@ export const MessageInput = () => {
 
              // @ts-ignore
             socketService.sendMessage(messageData);
-
-            console.log('chatMessage')
             dispatch(changeChatInputValue(""));
         }
     };

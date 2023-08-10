@@ -1,4 +1,4 @@
-import React, {ChangeEvent, memo, useCallback, useState} from 'react';
+import React, {ChangeEvent, memo, useCallback, useMemo, useState} from 'react';
 import {Tabs} from "../shared/Tabs";
 import {CHAT_TABS} from "../../constants/chatTabs";
 import {ContactItem} from "../ContactItem";
@@ -9,10 +9,10 @@ import './ContactList.scss';
 import {SEARCH_CONTACTS_PLACEHOLDER} from "../../constants/placeholders";
 import {useDispatch, useSelector} from "react-redux";
 import {selectOnlineUsers, selectUserList} from "../../store/user/selectors";
-import {changeCurrentChat} from "../../store/chat/actions";
+import {changeCurrentChat, setSearchQuery} from "../../store/chat/actions";
 import {UserDto} from "../../types/userDto";
 import {socketService} from "../../services/socketService";
-import {selectActiveChat, selectActiveUser} from "../../store/chat/selectors";
+import {getCurrentUserId, getSearchQuery, selectActiveChat, selectActiveUser} from "../../store/chat/selectors";
 import {changeCurrentChatWithThunk} from "../../store/chat/thunks";
 
 export const ContactList = memo(() => {
@@ -20,20 +20,33 @@ export const ContactList = memo(() => {
 
     const onlineUsers = useSelector(selectOnlineUsers);
     const allUsers = useSelector(selectUserList);
+    const currentUserid = useSelector(getCurrentUserId);
     const currentChat = useSelector(selectActiveChat);
     const currentUser = useSelector(selectActiveUser);
+    const searchQuery = useSelector(getSearchQuery);
 
-    const [search, setSearch] = useState('');
+    const filterList = (list: UserDto[]) => {
+        return list.filter((item) => {
+            const lowercaseSearchQuery = searchQuery.toLowerCase();
+            const lowercaseNickname = item.nickname.toLowerCase();
+            return item._id !== currentUserid  &&
+                lowercaseNickname.includes(lowercaseSearchQuery)
+        });
+    };
+
+    const filteredOnlineUsersList = filterList(onlineUsers);
+    const filteredAllUsersList = filterList(allUsers);
+
 
     const setSearchInput = useCallback((event: ChangeEvent<HTMLInputElement>) => {
-        setSearch(event.target.value);
+        dispatch(setSearchQuery(event.target.value));
     }, []);
 
     const clickHandler = useCallback((userId: UserDto) => {
-
         // @ts-ignore
         dispatch(changeCurrentChatWithThunk(userId));
     }, [currentChat, currentUser]);
+
 
     const tabsData = useCallback(() => {
         return [
@@ -42,8 +55,9 @@ export const ContactList = memo(() => {
                 title: CHAT_TABS.ONLINE_CHATS.title,
                 component: (
                     <>
-                        {onlineUsers.map(userInfo => <ContactItem contactData={userInfo} onClick={clickHandler}
-                                                                  key={userInfo._id}/>)}
+                        {filteredOnlineUsersList.map(userInfo => <ContactItem contactData={userInfo}
+                                                                              onClick={clickHandler}
+                                                                              key={userInfo._id}/>)}
                     </>
                 ),
             },
@@ -53,14 +67,14 @@ export const ContactList = memo(() => {
                 component: (
 
                     <>
-                        {allUsers.map(userInfo => <ContactItem contactData={userInfo} onClick={clickHandler}
-                                                               key={userInfo._id}/>)}
+                        {filteredAllUsersList.map(userInfo => <ContactItem contactData={userInfo} onClick={clickHandler}
+                                                                           key={userInfo._id}/>)}
                     </>
 
                 ),
             },
         ];
-    }, [onlineUsers, allUsers]);
+    }, [onlineUsers, allUsers, searchQuery]);
 
     return (
         <div className="contact-list">
@@ -68,7 +82,7 @@ export const ContactList = memo(() => {
                 <Tabs tabs={tabsData()}/>
             </div>
             <div className="contact-list__bottom">
-                <Input type={InputType.TEXT} value={search} onChange={setSearchInput}
+                <Input type={InputType.TEXT} value={searchQuery} onChange={setSearchInput}
                        placeholder={SEARCH_CONTACTS_PLACEHOLDER}/>
             </div>
         </div>

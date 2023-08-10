@@ -32,6 +32,7 @@ const App: React.FC = () => {
             const newUserData = JSON.stringify(userData);
             localStorage.setItem(USER_LOCALSTORAGE_KEY, newUserData);
             dispatch(setCurrentUser(userData));
+            console.log('Your user data:', userData)
         })
 
         socketService.subscribeToGetMessageListListener((messageList: MessageDto[]) => {
@@ -42,20 +43,19 @@ const App: React.FC = () => {
     }, []);
 
     useEffect(() => {
-      const userData = localStorage.getItem(USER_LOCALSTORAGE_KEY);
+        const userData = localStorage.getItem(USER_LOCALSTORAGE_KEY);
 
-      if(!userData){
-          socketService.initNewUser()
-      }else {
-          const user = JSON.parse(userData);
-          const userId = user._id;
+        if (!userData) {
+            socketService.initNewUser();
+        } else {
+            const user = JSON.parse(userData);
+            const userId = user._id;
 
-          dispatch(setCurrentUser(user));
-          socketService.changeOnlineStatus(userId, true);
-      }
+            dispatch(setCurrentUser(user));
+            socketService.changeOnlineStatus(userId, true);
+            console.log('Your user data:', userData)
+        }
     }, []);
-
-
 
 
     return (

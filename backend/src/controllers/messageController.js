@@ -17,41 +17,21 @@ export class MessageController {
     }
 
     postSavedMessage = (message) => {
-        this.io.emit('message:get-message', message)
+        this.socket.emit('message:get-message', message)
     }
 
     getMessageListListener() {
         this.socket.on('message:load_message_list_request', async ({recipientId, senderId}) => {
-            const correspondence = await Message.find({
-                $or: [
-                    {sender: {_id: senderId}, recipient: {_id: recipientId}},
-                    {sender: {_id: recipientId}, recipient: {_id: senderId}}
-                ]
-            }).populate('sender recipient').sort({timestamp: 1});
 
-         const qwe= await  Message.find({
-                $or: [
-                    { sender: recipientId, recipient: senderId },
-                    { sender: senderId, recipient: recipientId }
-                ]
-            })
-                .populate('sender')
-                .populate('recipient')
-                .sort('timestamp')
-                .exec();
-
-
-           const asd= await Message.find({
+           const messageList= await Message.find({
                $or: [
                    { sender: recipientId, recipient: senderId },
                    { sender: senderId, recipient: recipientId }
                ]
            }).populate('sender recipient').sort({ timestamp: 1 });
 
-            console.log(recipientId)
-            console.log(senderId)
 
-            this.socket.emit('message:load_message_list_response', asd);
+            this.socket.emit('message:load_message_list_response', messageList);
 
 
         })

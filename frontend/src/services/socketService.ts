@@ -14,7 +14,6 @@ class SocketService {
         this.socket.emit(WEBSOCKET_EVENTS.POST_MESSAGE, messageData);
     }
 
-
     subscribeToMessages(messageHandler: ServerToClientEvents['message']) {
         this.socket.on(WEBSOCKET_EVENTS.GET_MESSAGE, messageHandler);
     }
@@ -38,12 +37,26 @@ class SocketService {
         });
     }
 
-    requestGetMessageList (recipientId: string, senderId: string) {
+    requestGetMessageList(recipientId: string, senderId: string) {
         this.socket.emit(WEBSOCKET_EVENTS.LOAD_MESSAGE_LIST_REQUEST, {recipientId, senderId});
     }
 
     subscribeToGetMessageListListener(userListHandler: ServerToClientEvents['messageList']) {
         this.socket.on(WEBSOCKET_EVENTS.LOAD_MESSAGE_LIST_RESPONSE, userListHandler);
+    }
+
+    subscribeToUserTypingListener(userTypingHandler: ServerToClientEvents['userTyping']) {
+        this.socket.on(WEBSOCKET_EVENTS.SET_USER_IS_TYPING, userTypingHandler);
+    }
+
+    emmitUserIsTyping(nickname: string) {
+        this.socket.emit(WEBSOCKET_EVENTS.SET_USER_IS_TYPING, {nickname});
+    }
+    subscribeToUserStopTypingListener(userStopTypingHandler: ServerToClientEvents['userTyping']) {
+        this.socket.on(WEBSOCKET_EVENTS.SET_USER_STOP_TYPING, userStopTypingHandler);
+    }
+    emmitUserStopTyping() {
+        this.socket.emit(WEBSOCKET_EVENTS.SET_USER_STOP_TYPING);
     }
 
 }

@@ -7,11 +7,5 @@ export interface ServerToClientEvents {
     isTyping: (name: string) => void;
     userList: (data: UserDto[]) => void;
     newUser: (data: UserDto) => void;
+    userTyping: () => void;
 }
-
-// export interface ClientToServerEvents {
-//     message: (data: AddMessageDto) => void;
-//     join: (roomId: number) => void;
-//     leave: (roomId: number) => void;
-//     isTyping: (roomId: number) => void;
-// }
