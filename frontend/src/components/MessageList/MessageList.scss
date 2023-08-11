@@ -3,4 +3,21 @@
 
 .message-list{
   padding: 20px;
+  height: 385px;
+  position: relative;
+
+  &__wrapper {
+    height: 100%;
+    overflow-y: auto;
+    padding-right: 20px;
+  }
+  &__writing{
+    position: absolute;
+    font-size: 14px;
+    color: $font-color-blue;
+    text-align: center;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+  }
 }

@@ -1,3 +1,5 @@
+import {botsData} from "../constants/bots";
+
 export const formatTime = (isoString: string): string => {
     const date = new Date(isoString);
     let hours = date.getHours();
@@ -19,4 +21,8 @@ export const truncateString = (inputString: string, maxLength: number): string =
     }
 
     return inputString.slice(0, maxLength) + '...';
+}
+
+export const isBot = (id: string): boolean => {
+    return botsData.some(bot => bot._id === id);
 }

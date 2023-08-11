@@ -9,25 +9,24 @@ import {ServerToClientEvents} from "../types/socket";
 class SocketService {
     private readonly socket: Socket = io(API_URL);
 
-
     sendMessage(messageData: MessageDto) {
-        this.socket.emit(WEBSOCKET_EVENTS.POST_MESSAGE, messageData);
+        this.socket.emit(WEBSOCKET_EVENTS.SEND_MESSAGE, messageData);
     }
 
     subscribeToMessages(messageHandler: ServerToClientEvents['message']) {
-        this.socket.on(WEBSOCKET_EVENTS.GET_MESSAGE, messageHandler);
+        this.socket.on(WEBSOCKET_EVENTS.SEND_MESSAGE, messageHandler);
     }
 
     subscribeToUserList(userListHandler: ServerToClientEvents['userList']) {
         this.socket.on(WEBSOCKET_EVENTS.GET_USER_LIST, userListHandler);
     }
 
-    initNewUser() {
+    emitNewUser() {
         this.socket.emit(WEBSOCKET_EVENTS.INIT_NEW_USER);
     }
 
-    subscribeToNewUserInited(newUserHandler: ServerToClientEvents['newUser']) {
-        this.socket.on(WEBSOCKET_EVENTS.INITED_NEW_USER, newUserHandler);
+    subscribeToNewUser(newUserHandler: ServerToClientEvents['newUser']) {
+        this.socket.on(WEBSOCKET_EVENTS.INIT_NEW_USER, newUserHandler);
     }
 
     changeOnlineStatus(userId: string, isOnline: boolean) {
@@ -37,28 +36,38 @@ class SocketService {
         });
     }
 
-    requestGetMessageList(recipientId: string, senderId: string) {
-        this.socket.emit(WEBSOCKET_EVENTS.LOAD_MESSAGE_LIST_REQUEST, {recipientId, senderId});
+    emitGetMessageList(recipientId: string, senderId: string) {
+
+        this.socket.emit(WEBSOCKET_EVENTS.LOAD_MESSAGE_LIST, {recipientId, senderId});
     }
 
     subscribeToGetMessageListListener(userListHandler: ServerToClientEvents['messageList']) {
-        this.socket.on(WEBSOCKET_EVENTS.LOAD_MESSAGE_LIST_RESPONSE, userListHandler);
+        this.socket.on(WEBSOCKET_EVENTS.LOAD_MESSAGE_LIST, userListHandler);
     }
 
     subscribeToUserTypingListener(userTypingHandler: ServerToClientEvents['userTyping']) {
         this.socket.on(WEBSOCKET_EVENTS.SET_USER_IS_TYPING, userTypingHandler);
     }
 
-    emmitUserIsTyping(nickname: string) {
-        this.socket.emit(WEBSOCKET_EVENTS.SET_USER_IS_TYPING, {nickname});
+    emmitUserIsTyping(id: string) {
+        this.socket.emit(WEBSOCKET_EVENTS.SET_USER_IS_TYPING, {id});
     }
+
     subscribeToUserStopTypingListener(userStopTypingHandler: ServerToClientEvents['userTyping']) {
         this.socket.on(WEBSOCKET_EVENTS.SET_USER_STOP_TYPING, userStopTypingHandler);
     }
+
     emmitUserStopTyping() {
         this.socket.emit(WEBSOCKET_EVENTS.SET_USER_STOP_TYPING);
     }
 
+    subscribeBotMessageListener(botMessageHandler: ServerToClientEvents['botMessage']) {
+        this.socket.on(WEBSOCKET_EVENTS.BOT_MESSAGE, botMessageHandler);
+    }
+
+    emmitBotMessage(messageData: MessageDto) {
+        this.socket.emit(WEBSOCKET_EVENTS.BOT_MESSAGE, {messageData});
+    }
 }
 
 export const socketService = new SocketService();

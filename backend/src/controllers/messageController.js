@@ -1,7 +1,5 @@
-import Message from "../models/message.js";
-import mongoose from "mongoose";
-
-const messages = {}
+import {messageService} from "../services/messageService.js";
+import {SOCKET_EVENTS} from "../constants/socketEvents.js";
 
 export class MessageController {
     constructor(io, socket) {
@@ -9,46 +7,31 @@ export class MessageController {
         this.socket = socket;
         this.roomId = socket.roomId
 
-
         this.getMessageListListener();
 
         this.addMessageListener();
-
     }
 
     postSavedMessage = (message) => {
-        this.socket.emit('message:get-message', message)
+        this.socket.emit(SOCKET_EVENTS.SEND_MESSAGE, message);
+        this.socket.broadcast.emit(SOCKET_EVENTS.SEND_MESSAGE, message);
     }
 
     getMessageListListener() {
-        this.socket.on('message:load_message_list_request', async ({recipientId, senderId}) => {
+        this.socket.on(SOCKET_EVENTS.LOAD_MESSAGE_LIST, async ({recipientId, senderId}) => {
 
-           const messageList= await Message.find({
-               $or: [
-                   { sender: recipientId, recipient: senderId },
-                   { sender: senderId, recipient: recipientId }
-               ]
-           }).populate('sender recipient').sort({ timestamp: 1 });
+            const messageList = await messageService.getMessageList(recipientId, senderId)
 
-
-            this.socket.emit('message:load_message_list_response', messageList);
-
-
+            this.socket.emit(SOCKET_EVENTS.LOAD_MESSAGE_LIST, messageList);
         })
     }
 
     addMessageListener() {
-        this.socket.on('message:add', async (messageData) => {
+        this.socket.on(SOCKET_EVENTS.SEND_MESSAGE, async (messageData) => {
 
-            const newMessage = new Message(messageData);
-            await newMessage.save();
+            const newMessage = await messageService.saveMessage(messageData);
 
-            const populatedMessage = await Message.findById(newMessage._id)
-                .populate('sender')
-                .populate('recipient');
-            this.postSavedMessage(populatedMessage);
-            this.io.to(this.socket.handshake.auth.userId).to(messageData.recipient).emit('message:new_message', newMessage);
-
+            this.postSavedMessage(newMessage);
         })
     }
 

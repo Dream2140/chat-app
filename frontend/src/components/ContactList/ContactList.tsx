@@ -1,4 +1,4 @@
-import React, {ChangeEvent, memo, useCallback, useMemo, useState} from 'react';
+import React, {ChangeEvent, memo, useCallback} from 'react';
 import {Tabs} from "../shared/Tabs";
 import {CHAT_TABS} from "../../constants/chatTabs";
 import {ContactItem} from "../ContactItem";
@@ -9,9 +9,8 @@ import './ContactList.scss';
 import {SEARCH_CONTACTS_PLACEHOLDER} from "../../constants/placeholders";
 import {useDispatch, useSelector} from "react-redux";
 import {selectOnlineUsers, selectUserList} from "../../store/user/selectors";
-import {changeCurrentChat, setSearchQuery} from "../../store/chat/actions";
+import {setSearchQuery} from "../../store/chat/actions";
 import {UserDto} from "../../types/userDto";
-import {socketService} from "../../services/socketService";
 import {getCurrentUserId, getSearchQuery, selectActiveChat, selectActiveUser} from "../../store/chat/selectors";
 import {changeCurrentChatWithThunk} from "../../store/chat/thunks";
 

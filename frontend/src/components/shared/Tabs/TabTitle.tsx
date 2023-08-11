@@ -1,8 +1,6 @@
 import { useCallback } from 'react';
 import cn from 'classnames';
 
-import { Button } from '../Button';
-import { BUTTON_TYPE } from '../Button/Button';
 import './Tabs.scss';
 
 type tabTitleProps = {
@@ -18,7 +16,8 @@ export const TabTitle = ({ title, onClick, id, isActive }: tabTitleProps): JSX.E
   }, [onClick, id]);
 
   return (
-    <div className="tabs__title"
+    <div
+         className={cn('tabs__title', { 'tabs__title--active': isActive })}
       onClick={handleClick}
     >
       {title}

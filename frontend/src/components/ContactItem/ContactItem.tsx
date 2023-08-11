@@ -6,6 +6,9 @@ import {MOCK_USER_DESCRIPTION} from "../../constants/mockData";
 import {truncateString} from "../../helpers/helpers";
 
 import {UserDto} from "../../types/userDto";
+import cn from "classnames";
+import {useSelector} from "react-redux";
+import {selectActiveChat} from "../../store/chat/selectors";
 
 
 export const DESCRIPTION_LENGTH = 45;
@@ -15,13 +18,21 @@ export type ContactItemProps = {
     contactData: UserDto;
 }
 export const ContactItem = ({contactData, onClick}: ContactItemProps) => {
+    const activeChat = useSelector(selectActiveChat);
+
+    const isActiveItem = activeChat?._id === contactData._id;
+
     const handleClick = () => {
         onClick(contactData)
     }
+
     return (
-        <div className="contact-item" onClick={handleClick}>
+        <div onClick={handleClick} className={cn('contact-item', {
+            'contact-item--online': contactData.isOnline,
+            'contact-item--active': isActiveItem,
+        })} >
             <div className="contact-item__avatar">
-                <Avatar avatarLetter={contactData.avatar} userName={contactData.nickname}/>
+                <Avatar avatarLetter={contactData?.avatarLetter} userName={contactData.nickname} avatarImgLink={contactData?.avatarPath}/>
             </div>
             <div className="contact-item__message">
                 <h6 className="contact-item__username">{contactData.nickname}</h6>

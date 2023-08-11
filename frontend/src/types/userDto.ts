@@ -1,6 +1,7 @@
 export interface UserDto {
     _id: string;
     nickname: string;
-    avatar: string;
+    avatarLetter?: string;
+    avatarPath?: string;
     isOnline: boolean;
 }

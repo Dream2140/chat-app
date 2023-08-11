@@ -8,9 +8,10 @@ import {selectActiveUser} from "../../store/chat/selectors";
 
 
 export const Message: React.FC<{ messageData: MessageDto }> = ({ messageData })=> {
+
     const currentUser = useSelector(selectActiveUser);
 
-    const messageType = messageData.sender._id === currentUser?._id ? 'sender': 'recipient';
+    const messageType = messageData.sender?._id === currentUser?._id ? 'sender': 'recipient';
 
     return (
         <div className={cn('message', `message--${messageType}`)}>

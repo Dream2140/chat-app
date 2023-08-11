@@ -8,4 +8,6 @@ export interface ServerToClientEvents {
     userList: (data: UserDto[]) => void;
     newUser: (data: UserDto) => void;
     userTyping: () => void;
+    seenMessage: (id: string) => void;
+    botMessage: (data: MessageDto) => void;
 }

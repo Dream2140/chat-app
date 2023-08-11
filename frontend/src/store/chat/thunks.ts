@@ -10,9 +10,8 @@ export const changeCurrentChatWithThunk =
         async (dispatch, getState) => {
             dispatch(changeCurrentChat(userId));
 
-            const currentChat = selectActiveChat(getState());
-            const currentUser = selectActiveUser(getState());
+            const currentChatId = selectActiveChat(getState())?._id || '';
+            const currentUserId = selectActiveUser(getState())?._id || '';
 
-            // @ts-ignore
-            socketService.requestGetMessageList(currentChat._id, currentUser._id);
+            socketService.emitGetMessageList(currentChatId, currentUserId);
         };

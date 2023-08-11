@@ -4,11 +4,28 @@
 .message {
   background-color: $bg-color-color-message;
   border-radius: $border-radius;
-  overflow: hidden;
-  max-width: 635px;
+  max-width: 630px;
+
   width: 100%;
+  box-shadow: 4px 4px 6px rgba(0, 0, 0, 0.1);
+  position: relative;
+
   &:not(:last-child) {
     margin-bottom: 20px;
+  }
+
+  &::after {
+    content: "";
+    position: absolute;
+    bottom: 12px;
+    right: -9px;
+    width: 0;
+    height: 0;
+    border-left: 7px solid transparent;
+    border-top: 7px solid transparent;
+    border-right: 10px solid #f4f8fb;
+    border-bottom: 10px solid #f4f8fb;
+    transform: rotate(315deg);
   }
 
   &__header {
@@ -49,8 +66,17 @@
   }
 
   &--recipient {
+    margin-left: 15px;
+    width: calc(100% - 15px);
     &__username {
       color: $font-color-black;
+    }
+
+    &::after {
+      left: -8px;
+      transform: rotate(133deg);
+      z-index: 99;
+      right: unset;
     }
   }
 }

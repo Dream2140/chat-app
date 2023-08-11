@@ -1,5 +1,11 @@
-async function echoBot(user, message) {
-    return message;
-}
+import {messageService} from "../services/messageService.js";
 
-module.exports = echoBot;
+export const echoBot = async (message) => {
+    const messageData = {
+        sender: message.recipient,
+        recipient: message.sender,
+        text: message.text,
+    }
+
+    return await messageService.saveMessage(messageData)
+}

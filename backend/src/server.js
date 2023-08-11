@@ -8,6 +8,7 @@ import mongoose from 'mongoose'
 import { Server } from 'socket.io'
 import {FRONTEND_LINK, MONGODB_URI, PORT} from "./config.js";
 import {ConnectionController} from "./controllers/connectionController.js";
+import {createDefaultBots} from "./services/botService.js";
 
 const app = express();
 
@@ -23,8 +24,15 @@ try {
         useUnifiedTopology: true,
         useNewUrlParser: true
     });
-
     console.log('Successful connection to MongoDB');
+    createDefaultBots()
+        .then(() => {
+            console.log('Default bots setup completed.');
+        })
+        .catch(error => {
+            console.error('Error setting up default bots:', error);
+        });
+
 } catch (error) {
     console.error('Error when connecting to MongoDB:', error);
     throw error;

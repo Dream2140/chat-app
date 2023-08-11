@@ -1,6 +1,7 @@
 import React from 'react';
 
-import './Avatar.scss'
+import './Avatar.scss';
+
 
 export type avatarProps = {
     userName: string;
@@ -8,7 +9,6 @@ export type avatarProps = {
     avatarImgLink?: string;
 }
 export const Avatar = ({userName, avatarLetter, avatarImgLink}: avatarProps) => {
-
     const renderAvatar = () => {
         if (avatarImgLink) {
             return <img src={avatarImgLink} alt={userName} className="avatar__img"/>;

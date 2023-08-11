@@ -17,5 +17,11 @@
     color: $font-color-black;
     font-size: 32px;
     line-height: 67px;
+
+    @media screen and (max-width: $mobile-width) {
+      text-align: center;
+    }
   }
+
+
 }

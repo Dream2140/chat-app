@@ -3,7 +3,13 @@
 
 .tabs {
   &__content{
-    padding: 15px;
+    padding: 15px 0;
+    max-height: 520px;
+    overflow-y: hidden;
+
+    &:hover {
+      overflow-y: auto;
+    }
   }
   &__header{
     font-size: 14px;
@@ -14,13 +20,15 @@
     justify-content: space-between;
     height: 40px;
   }
-  &__title{
+  &__title {
     flex: 1;
     @include centerElement();
     cursor: pointer;
-
-    &:hover{
-      background-color: $bg-color-color-tab;
+    background-color: $bg-color-color-tab;
+    border: 1px solid $border-color-tab;
+    &--active {
+      border: none;
+      background-color: inherit;
     }
   }
 

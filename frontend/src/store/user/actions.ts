@@ -1,7 +1,7 @@
 import {
     ActionWithPayloadHelper,
     ActionsUnion,
-    createAction,
+    createAction, simpleActionCreator,
 
 } from '../../types/store';
 
@@ -16,9 +16,12 @@ export const addUserList = (
 ): ActionWithPayloadHelper<UserActionTypes.ADD_USER_LIST, UserDto[]> =>
     createAction(UserActionTypes.ADD_USER_LIST, payload);
 
+export const resetUserList =  simpleActionCreator(UserActionTypes.RESET_USER_LIST);
+
 
 const userActions = {
     addUserList,
+    resetUserList
 };
 
 export type UserActionType = ActionsUnion<typeof userActions>;

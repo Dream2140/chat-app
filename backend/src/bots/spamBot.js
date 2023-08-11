@@ -1,10 +1,21 @@
-const { createRandomMessage, delay } = require('../helpers/helpers');
+import {createRandomMessage, getRandomDelay} from "../helpers/helpers.js";
+import {messageService} from "../services/messageService.js";
+import {SOCKET_EVENTS} from "../constants/socketEvents.js";
 
-async function spamBot(user, io) {
-    while (true) {
-        await delay(Math.floor(Math.random() * 111000) + 10000); // От 10 до 120 секунд
-        io.to(user.socketId).emit('message', createRandomMessage());
+export const spamBot =  async (socket, message) => {
+
+    const messageData = {
+        sender: message.recipient,
+        recipient: message.sender,
+        text: createRandomMessage(),
     }
-}
 
-module.exports = spamBot;
+   const botMessage =  await messageService.saveMessage(messageData)
+
+
+    socket.emit(SOCKET_EVENTS.BOT_MESSAGE, botMessage);
+
+    const delay = getRandomDelay(10000, 120000);
+    setTimeout(() => spamBot(socket, message), delay);
+
+}

@@ -10,7 +10,7 @@ export const UserCard = () => {
     return (
         <div className="user-card">
             <div className="user-card__avatar">
-                <Avatar userName={userData?.nickname as string} avatarLetter={userData?.avatar}/>
+                <Avatar userName={userData?.nickname as string} avatarLetter={userData?.avatarLetter} avatarImgLink={userData?.avatarPath}/>
             </div>
             <div className="user-card__info">
                 <h3 className="user-card__title">{userData?.nickname}</h3>

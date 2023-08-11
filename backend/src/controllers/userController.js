@@ -1,5 +1,5 @@
-import User from "../models/user.js";
-import {generateRandomName, getRandomLetter} from "../helpers/helpers.js";
+import {SOCKET_EVENTS} from "../constants/socketEvents.js";
+import {userService} from "../services/userService.js";
 
 
 export class UserController {
@@ -9,7 +9,7 @@ export class UserController {
 
         this.initUserListener();
 
-        this.initUserListListener();
+        this.sendUserList();
 
         this.connectUserListener();
 
@@ -19,49 +19,48 @@ export class UserController {
     }
 
     initUserListener() {
-        this.socket.on('user:init', async () => {
-            const newUserData = await this.addNewUser();
+        this.socket.on(SOCKET_EVENTS.INIT_NEW_USER, async () => {
+
+            const newUserData = await userService.saveUser();
+
             this.socket.userId = newUserData._id;
-            this.io.to(this.socket.id).emit('user:new_user_inited', newUserData);
+
+            this.io.to(this.socket.id).emit(SOCKET_EVENTS.INIT_NEW_USER, newUserData);
+
+            await this.sendUserList();
         })
     }
 
-    async addNewUser() {
-        const newUser = {nickname: generateRandomName(), avatar: getRandomLetter(), isOnline: true}
 
-        return User.create(newUser);
-    }
+    async sendUserList() {
 
-    async getUserList() {
-        return User.find();
-    }
+        const users = await userService.getUserList();
 
-    async initUserListListener() {
-        const users = await this.getUserList()
-
-        this.socket.emit('user:user_list', users);
+        this.io.emit(SOCKET_EVENTS.GET_USER_LIST, users);
     }
 
     async connectUserListener() {
-
-        this.socket.on('user:change_online_status', async ({_id, isOnline}) => {
+        this.socket.on(SOCKET_EVENTS.CHANGE_USER_STATUS, async ({_id, isOnline}) => {
             this.socket.userId = _id
-            await User.findOneAndUpdate({_id}, {isOnline});
 
-            await this.initUserListListener();
+            await userService.setOnlineStatus(_id, isOnline);
 
+            await this.sendUserList();
         })
     }
 
     initUserTypingListener() {
-        this.socket.on('user:set_user_typing', async () => {
-            this.socket.broadcast.emit('user:set_user_typing');
+
+        this.socket.on(SOCKET_EVENTS.SET_USER_IS_TYPING, async () => {
+
+            this.socket.broadcast.emit(SOCKET_EVENTS.SET_USER_IS_TYPING);
         })
     }
 
     initUserStopTypingListener() {
-        this.socket.on('user:user_stop_typing', async (user) => {
-            this.socket.broadcast.emit('user:user_stop_typing', user);
+
+        this.socket.on(SOCKET_EVENTS.SET_USER_STOP_TYPING, async (user) => {
+            this.socket.broadcast.emit(SOCKET_EVENTS.SET_USER_STOP_TYPING, user);
         })
     }
 }

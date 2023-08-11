@@ -1,13 +1,6 @@
-import {
-    ActionWithPayloadHelper,
-    ActionsUnion,
-    createAction, simpleActionCreator,
-
-} from '../../types/store';
+import {ActionsUnion, ActionWithPayloadHelper, createAction, simpleActionCreator,} from '../../types/store';
 import {MessageActionTypes} from "./actionTypes";
 import {MessageDto} from "../../types/messageDto";
-
-
 
 
 export const addMessage = (
@@ -20,12 +13,13 @@ export const addMessageList = (
 ): ActionWithPayloadHelper<MessageActionTypes.ADD_MESSAGE_LIST, MessageDto[]> =>
     createAction(MessageActionTypes.ADD_MESSAGE_LIST, payload);
 
-export const resetMessageList = simpleActionCreator(MessageActionTypes.RESET_MESSAGE_LIST)
+export const resetMessageList = simpleActionCreator(MessageActionTypes.RESET_MESSAGE_LIST);
+
 
 const messageActions = {
     addMessage,
     resetMessageList,
-    addMessageList
+    addMessageList,
 };
 
 export type MessageActionType = ActionsUnion<typeof messageActions>;
