@@ -1,9 +1,9 @@
 import mongoose from 'mongoose'
-import crypto from "crypto";
+import {v4} from "uuid";
 const {Schema, model} = mongoose;
 
 const userSchema = new Schema({
-    _id: {  type: String, default: crypto.randomUUID() },
+    _id: {  type: String, default: v4()},
     nickname: {type: String, required: true},
     avatarLetter: {type: String, required: false},
     avatarPath: {type: String, required: false},
