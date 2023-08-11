@@ -36,7 +36,7 @@ export class UserController {
 
         const users = await userService.getUserList();
 
-        this.socket.emit(SOCKET_EVENTS.GET_USER_LIST, users);
+        this.io.emit(SOCKET_EVENTS.GET_USER_LIST, users);
     }
 
     async connectUserListener() {
