@@ -1,0 +1,26 @@
+{
+  "name": "chat-app",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "install": "npm install --prefix backend && npm install --prefix frontend",
+    "start": "concurrently \"npm:start-backend\" \"npm:start-frontend\"",
+    "start-backend": "npm start --prefix backend",
+    "start-frontend": "npm start --prefix frontend"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Dream2140/chat-app.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Dream2140/chat-app/issues"
+  },
+  "homepage": "https://github.com/Dream2140/chat-app#readme",
+  "dependencies": {
+    "concurrently": "^8.2.0"
+  }
+}

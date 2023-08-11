@@ -47,8 +47,7 @@ coverage
 build/Release
 
 # Dependency directories
-frontend/node_modules
-backend/node_modules
+node_modules
 jspm_packages
 bower_components
 uploads/
