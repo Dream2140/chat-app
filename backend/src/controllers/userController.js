@@ -23,8 +23,6 @@ export class UserController {
 
             const newUserData = await userService.saveUser();
 
-            this.socket.userId = newUserData._id;
-
             userSocketMap.set(newUserData._id, this.socket.id);
 
             this.io.to(this.socket.id).emit(SOCKET_EVENTS.INIT_NEW_USER, newUserData);
@@ -44,7 +42,6 @@ export class UserController {
 
     async connectUserListener() {
         this.socket.on(SOCKET_EVENTS.CHANGE_USER_STATUS, async ({_id, isOnline}) => {
-            this.socket.userId = _id
 
             await userService.setOnlineStatus(_id, isOnline);
 

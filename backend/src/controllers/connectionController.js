@@ -3,6 +3,7 @@ import {MessageController} from "./messageController.js";
 import User from "../models/user.js";
 import {BotController} from "./botController.js";
 import {SOCKET_EVENTS} from "../constants/socketEvents.js";
+import {userSocketMap} from "../constants/userSocketMap.js";
 
 export class ConnectionController {
     constructor(io, socket) {
@@ -17,8 +18,12 @@ export class ConnectionController {
 
     async setDisconnectListener(){
         this.socket.on(SOCKET_EVENTS.DISCONNECT, async  () => {
-            const userId = this.socket.userId;
+            let userId = null;
 
+            for (let id of userSocketMap.keys()) {
+                userId = id;
+            }
+            console.log(userId)
             await User.findOneAndUpdate({ _id: userId }, { isOnline: false });
             await this.user.sendUserList();
         });
