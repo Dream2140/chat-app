@@ -23,7 +23,7 @@ export class ConnectionController {
             for (let id of userSocketMap.keys()) {
                 userId = id;
             }
-            console.log(userId)
+
             await User.findOneAndUpdate({ _id: userId }, { isOnline: false });
             await this.user.sendUserList();
         });
