@@ -19,10 +19,10 @@ export class BotController {
             const botId = messageData.recipient._id;
 
             const savedMessage = await messageService.saveMessage(messageData);
+
             this.socket.emit(SOCKET_EVENTS.BOT_MESSAGE, savedMessage);
 
             if (botId === BOT_ID.ECHO_BOT) {
-
                 const botResponse = await echoBot(savedMessage);
                 this.socket.emit(SOCKET_EVENTS.BOT_MESSAGE, botResponse);
                 return;

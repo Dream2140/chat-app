@@ -49,8 +49,8 @@ class SocketService {
         this.socket.on(WEBSOCKET_EVENTS.SET_USER_IS_TYPING, userTypingHandler);
     }
 
-    emmitUserIsTyping(id: string) {
-        this.socket.emit(WEBSOCKET_EVENTS.SET_USER_IS_TYPING, {id});
+    emmitUserIsTyping(recipientId: string, senderId: string) {
+        this.socket.emit(WEBSOCKET_EVENTS.SET_USER_IS_TYPING, {recipientId, senderId});
     }
 
     subscribeToUserStopTypingListener(userStopTypingHandler: ServerToClientEvents['userTyping']) {

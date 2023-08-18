@@ -7,7 +7,7 @@ export interface ServerToClientEvents {
     isTyping: (name: string) => void;
     userList: (data: UserDto[]) => void;
     newUser: (data: UserDto) => void;
-    userTyping: () => void;
+    userTyping: (id: string) => void;
     seenMessage: (id: string) => void;
     botMessage: (data: MessageDto) => void;
 }

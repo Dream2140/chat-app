@@ -5,12 +5,14 @@ import {MessageDto} from "../../types/messageDto";
 import {useDispatch, useSelector} from "react-redux";
 import {selectMessageList} from "../../store/message/selectors";
 import {socketService} from "../../services/socketService";
-import {selectActiveChat} from "../../store/chat/selectors";
+import {getCurrentChatId, selectActiveChat} from "../../store/chat/selectors";
 import {addMessage} from "../../store/message/actions";
+
 
 export const MessageList = () => {
     const messageList: MessageDto[] = useSelector(selectMessageList);
     const recipientData = useSelector(selectActiveChat);
+    const currentChatId = useSelector(getCurrentChatId);
 
     const dispatch = useDispatch();
 
@@ -26,8 +28,10 @@ export const MessageList = () => {
 
     useEffect(() => {
 
-        socketService.subscribeToUserTypingListener(() => {
+        socketService.subscribeToUserTypingListener((recipientId) => {
+            if (recipientId === currentChatId) {
                 setIsTyping(`${recipientData?.nickname} is typing...`)
+            }
         })
 
         socketService.subscribeBotMessageListener((message: MessageDto) => {

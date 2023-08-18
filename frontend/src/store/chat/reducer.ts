@@ -12,12 +12,7 @@ export interface ChatState {
 
 export const INITIAL_STATE: ChatState = {
     inputValue: '',
-    activeChat: {
-        _id: 'echo-bot',
-        nickname: 'Echo bot',
-        avatarPath: '/images/echo-bot.png',
-        isOnline: true,
-    },
+    activeChat: null,
     userData: null,
     searchQuery: '',
 };

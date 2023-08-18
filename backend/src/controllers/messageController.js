@@ -1,5 +1,6 @@
 import {messageService} from "../services/messageService.js";
 import {SOCKET_EVENTS} from "../constants/socketEvents.js";
+import {userSocketMap} from "../constants/userSocketMap.js";
 
 export class MessageController {
     constructor(io, socket) {
@@ -13,8 +14,12 @@ export class MessageController {
     }
 
     postSavedMessage = (message) => {
+
+        const recipientSocketId = userSocketMap.get(message.recipient._id);
+
+        this.socket.to(recipientSocketId).emit(SOCKET_EVENTS.SEND_MESSAGE, message);
         this.socket.emit(SOCKET_EVENTS.SEND_MESSAGE, message);
-        this.socket.broadcast.emit(SOCKET_EVENTS.SEND_MESSAGE, message);
+
     }
 
     getMessageListListener() {

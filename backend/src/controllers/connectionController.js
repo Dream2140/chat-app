@@ -16,7 +16,7 @@ export class ConnectionController {
     }
 
     async setDisconnectListener(){
-        this.socket.on(SOCKET_EVENTS.DISCONNECT, async () => {
+        this.socket.on(SOCKET_EVENTS.DISCONNECT, async  () => {
             const userId = this.socket.userId;
 
             await User.findOneAndUpdate({ _id: userId }, { isOnline: false });

@@ -34,9 +34,9 @@ export const MessageInput = () => {
             socketService.emmitUserStopTyping();
         }, 5000);
 
-        socketService.emmitUserIsTyping(currentUser?._id || '')
+        socketService.emmitUserIsTyping(currentChat?._id || '', currentUser?._id || '');
         dispatch(changeChatInputValue(event.target.value));
-    }, []);
+    }, [messageValue, currentChat]);
 
     const handleSendMessage = ()=>{
         if ( messageValue.trim() !== "") {
@@ -57,6 +57,7 @@ export const MessageInput = () => {
             if (typingTimeoutRef.current) {
                 clearTimeout(typingTimeoutRef.current);
             }
+
             socketService.emmitUserStopTyping();
 
             // @ts-ignore

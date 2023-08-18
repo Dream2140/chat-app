@@ -24,6 +24,12 @@ export const getCurrentUserId = createSelector(
     chatState => chatState.userData?._id,
 );
 
+export const getCurrentChatId = createSelector(
+    getMessageStoreData,
+    chatState => chatState.activeChat?._id,
+);
+
+
 export const getSearchQuery = createSelector(
     getMessageStoreData,
     chatState => chatState.searchQuery,

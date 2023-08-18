@@ -6,9 +6,9 @@ import {selectActiveChat, selectActiveUser} from "./selectors";
 import {socketService} from "../../services/socketService";
 
 export const changeCurrentChatWithThunk =
-    (userId: UserDto): AppThunk =>
+    (userData: UserDto): AppThunk =>
         async (dispatch, getState) => {
-            dispatch(changeCurrentChat(userId));
+            dispatch(changeCurrentChat(userData));
 
             const currentChatId = selectActiveChat(getState())?._id || '';
             const currentUserId = selectActiveUser(getState())?._id || '';

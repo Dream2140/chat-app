@@ -4,11 +4,14 @@ import {Chat} from "./components/Chat";
 import {useDispatch} from "react-redux";
 import {socketService} from "./services/socketService";
 import {MessageDto} from "./types/messageDto";
-import {addMessage, addMessageList} from "./store/message/actions";
+import {addMessageList} from "./store/message/actions";
 import {UserDto} from "./types/userDto";
 import {addUserList, resetUserList} from "./store/user/actions";
 import {USER_LOCALSTORAGE_KEY} from "./constants/userConstants";
 import {setCurrentUser} from "./store/chat/actions";
+import {saveMessageThunk} from "./store/message/thunks";
+import {botsData} from "./constants/bots";
+import {changeCurrentChatWithThunk} from "./store/chat/thunks";
 
 
 const App: React.FC = () => {
@@ -18,7 +21,8 @@ const App: React.FC = () => {
 
     useEffect(() => {
         socketService.subscribeToMessages((message: MessageDto) => {
-            dispatch(addMessage(message));
+            // @ts-ignore
+            dispatch(saveMessageThunk(message));
         });
 
         socketService.subscribeToUserList((userList: UserDto[]) => {
@@ -37,7 +41,6 @@ const App: React.FC = () => {
             dispatch(addMessageList(messageList));
         });
 
-
     }, []);
 
     useEffect(() => {
@@ -53,6 +56,9 @@ const App: React.FC = () => {
             socketService.changeOnlineStatus(userId, true);
             console.log('Your user data:', userData)
         }
+
+        // @ts-ignore
+        dispatch(changeCurrentChatWithThunk(botsData[0]))
     }, []);
 
 
